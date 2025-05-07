@@ -59,8 +59,6 @@ while [[ $# -gt 0 ]]; do
       cat << EOF
 SyLVReDxx is **Sy**stematic hard-**L**inking intra-**V**olume **Re**cursive **D**eduplication, in (Modern) C++
 Copyright (c) 2019-2024, Matthew Wilson and Synesis Information Systems
-Copyright (c) 2002-2019, Matthew Wilson and Synesis Software
-Copyright (c) 1999-2002 Matthew Wilson
 Removes all known CMake artefacts
 
 $ScriptPath [ ... flags/options ... ]
