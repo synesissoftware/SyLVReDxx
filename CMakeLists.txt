@@ -87,7 +87,7 @@ endif(MSVC)
 
 
 # ##########################################################
-# dependencies, includes, options
+# dependencies, features, includes, and options
 
 # ################################################
 # includes - 1
@@ -118,13 +118,14 @@ option(BUILD_TESTING "Build tests" ON)
 # required:
 # - Pantheios;
 # - recls;
-# - shwild;
 # - STLSoft;
 # - xTests - required for testing;
 #
 # optional:
 #
 # - b64;
+# - shwild;
+# - UNIXem - required for examples/testing on Windows if USE_UNIXEM and WIN32 are defined;
 
 
 # ############################
@@ -230,6 +231,25 @@ else()
 	endif()
 
 	include_directories(${STLSOFT_INCLUDE_DIR})
+endif()
+
+
+# ############################
+# UNIXem
+
+if((USE_UNIXEM) AND (WIN32))
+
+	set(UNIXem_REQUIRED_VERSION_ 1.12.7)
+
+	find_package(UNIXem ${UNIXem_REQUIRED_VERSION_} REQUIRED)
+
+	message("-- CMake package UNIXem found (version ${UNIXem_VERSION}; ${UNIXem_REQUIRED_VERSION_} requested)")
+
+	add_compile_definitions(_STLSOFT_FORCE_ANY_COMPILER)
+	add_compile_definitions(EMULATE_UNIX_ON_WINDOWS)
+	add_compile_definitions(RECLS_HAS_UNIXEM)
+	add_compile_definitions(STLSOFT_HAS_UNIXEM)
+	add_compile_definitions(SYLVREDXX_HAS_UNIXem)
 endif()
 
 

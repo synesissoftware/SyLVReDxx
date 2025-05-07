@@ -20,6 +20,10 @@
 # include <shwild/shwild.h>
 #endif
 
+#ifdef SYLVREDXX_HAS_UNIXem
+# include <unixem/unixem.h>
+#endif
+
 
 #include <iomanip>
 #include <iostream>
@@ -135,6 +139,15 @@ int main(int argc, char* argv[])
 
             version(std::cout, "\tSTLSoft", libver);
         }
+
+#ifdef SYLVREDXX_HAS_UNIXem
+
+        {
+            auto const libver = UNIXEM_VER;
+
+            version(std::cout, "\tUNIXem", libver);
+        }
+#endif
 
 
         return EXIT_SUCCESS;
