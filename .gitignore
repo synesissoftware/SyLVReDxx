@@ -99,6 +99,7 @@ include/stlsoft/internal/dos2unix.has.been.performed
 *.d
 *.dll
 *.dylib
+*.dsp
 *.exe
 *.gch
 *.idb
@@ -134,5 +135,6 @@ include/stlsoft/internal/dos2unix.has.been.performed
 *.unsuccessfulbuild
 *.vcproj*.user
 *.vcxproj*.user
+*.xcuserstate
 *.zip
 
