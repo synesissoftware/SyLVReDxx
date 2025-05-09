@@ -1,3 +1,2 @@
 # SIS:AUTO_GENERATED: Remove this line if you edit the file, otherwise it will be overwritten
-add_subdirectory(libver)
-add_subdirectory(multiple_roots_multithreaded)
+define_example_program(multiple_roots_multithreaded main.cpp)
