@@ -5,7 +5,7 @@
 # Purpose:  Top-level CMake lists file for SyLVReDxx
 #
 # Created:  24th April 2025
-# Updated:  7th May 2025
+# Updated:  8th May 2025
 #
 # ######################################################################## #
 
@@ -116,6 +116,8 @@ option(BUILD_TESTING "Build tests" ON)
 # dependencies
 #
 # required:
+# - CLASP;
+# - libCLImate;
 # - Pantheios;
 # - recls;
 # - STLSoft;
@@ -148,6 +150,36 @@ else()
 
 	add_compile_definitions(PANTHEIOS_NO_B64)
 endif()
+
+
+# ############################
+# CLASP
+
+if(BUILD_TESTING)
+
+	set(CLASP_REQUIRED_VERSION_ 0.15)
+
+	find_package(CLASP ${CLASP_REQUIRED_VERSION_} REQUIRED)
+
+	message("-- CMake package CLASP found (version ${CLASP_VERSION}; ${CLASP_REQUIRED_VERSION_} requested)")
+
+	add_compile_definitions(SYLVREDXX_HAS_CLASP)
+endif(BUILD_TESTING)
+
+
+# ############################
+# libCLImate
+
+if(BUILD_TESTING)
+
+	set(libCLImate_REQUIRED_VERSION_ 0.4)
+
+	find_package(libCLImate ${libCLImate_REQUIRED_VERSION_} REQUIRED)
+
+	message("-- CMake package libCLImate found (version ${libCLImate_VERSION}; ${libCLImate_REQUIRED_VERSION_} requested)")
+
+	add_compile_definitions(SYLVREDXX_HAS_libCLImate)
+endif(BUILD_TESTING)
 
 
 # ############################
