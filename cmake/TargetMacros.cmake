@@ -75,7 +75,7 @@ function(define_example_program program_name entry_point_source_name)
 			CLASP::core
 			libCLImate::core
 			Pantheios::Pantheios.core
-			Pantheios::Pantheios.fe.all
+			Pantheios::Pantheios.fe.simple
 			Pantheios::Pantheios.be.AnsiConsole
 			Pantheios::Pantheios.bec.AnsiConsole
 			Pantheios::Pantheios.util
