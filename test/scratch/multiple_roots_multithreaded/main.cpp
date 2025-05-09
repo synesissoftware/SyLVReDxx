@@ -159,7 +159,6 @@ int run(
 
     for (auto const& search_root : search_roots)
     {
-        // auto search_root = srch_root.substr(0);
         char const* search_dir = search_root.c_str();
 
         auto th = std::thread([&pc, search_dir] () {
@@ -200,7 +199,7 @@ int run(
                             // at this point we have:
                             //
                             // 1. a hard-link to the same file with a _different_ name, which we want to record; or
-                            // 2. a duplicate search results, which we want to ignore
+                            // 2. a duplicate search results, which we want to ignore.
 
                             auto& duplicates = (*i).second;
 
@@ -224,10 +223,11 @@ int run(
             }
             catch(std::bad_alloc&)
             {
-                ;
+                pan::logputs(pan::alert, "out of memory");
             }
             catch(std::exception& x)
             {
+                pan::log_CRITICAL("search of '", search_dir, "' failed: ", x);
             }
         });
 
