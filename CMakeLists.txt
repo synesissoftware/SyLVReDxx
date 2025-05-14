@@ -5,7 +5,7 @@
 # Purpose:  Top-level CMake lists file for SyLVReDxx
 #
 # Created:  24th April 2025
-# Updated:  24th April 2025
+# Updated:  8th May 2025
 #
 # ######################################################################## #
 
@@ -87,7 +87,7 @@ endif(MSVC)
 
 
 # ##########################################################
-# dependencies, includes, options
+# dependencies, features, includes, and options
 
 # ################################################
 # includes - 1
@@ -116,9 +116,120 @@ option(BUILD_TESTING "Build tests" ON)
 # dependencies
 #
 # required:
-# - STLSoft - required, both for implementation and interface;
+# - CLASP;
+# - libCLImate;
+# - Pantheios;
+# - recls;
+# - STLSoft;
+# - xTests - required for testing;
 #
 # optional:
+#
+# - b64;
+# - shwild;
+# - UNIXem - required for examples/testing on Windows if USE_UNIXEM and WIN32 are defined;
+
+
+# ############################
+# b64
+
+if(NOT NO_B64)
+
+	find_package(b64 QUIET)
+
+	if(b64_FOUND)
+
+		message("-- CMake package b64 found (version ${b64_VERSION})")
+	endif(b64_FOUND)
+endif()
+
+if(b64_FOUND)
+
+	add_compile_definitions(SYLVREDXX_HAS_b64)
+else()
+
+	add_compile_definitions(PANTHEIOS_NO_B64)
+endif()
+
+
+# ############################
+# CLASP
+
+if(BUILD_TESTING)
+
+	set(CLASP_REQUIRED_VERSION_ 0.15)
+
+	find_package(CLASP ${CLASP_REQUIRED_VERSION_} REQUIRED)
+
+	message("-- CMake package CLASP found (version ${CLASP_VERSION}; ${CLASP_REQUIRED_VERSION_} requested)")
+
+	add_compile_definitions(SYLVREDXX_HAS_CLASP)
+endif(BUILD_TESTING)
+
+
+# ############################
+# libCLImate
+
+if(BUILD_TESTING)
+
+	set(libCLImate_REQUIRED_VERSION_ 0.4)
+
+	find_package(libCLImate ${libCLImate_REQUIRED_VERSION_} REQUIRED)
+
+	message("-- CMake package libCLImate found (version ${libCLImate_VERSION}; ${libCLImate_REQUIRED_VERSION_} requested)")
+
+	add_compile_definitions(SYLVREDXX_HAS_libCLImate)
+endif(BUILD_TESTING)
+
+
+# ############################
+# Pantheios
+
+if(BUILD_TESTING)
+
+	set(Pantheios_REQUIRED_VERSION_ 1.0)
+
+	find_package(Pantheios ${Pantheios_REQUIRED_VERSION_} REQUIRED)
+
+	message("-- CMake package Pantheios found (version ${Pantheios_VERSION}; ${Pantheios_REQUIRED_VERSION_} requested)")
+
+	add_compile_definitions(SYLVREDXX_HAS_Pantheios)
+endif(BUILD_TESTING)
+
+
+# ############################
+# recls
+
+if(BUILD_TESTING)
+
+	set(recls_REQUIRED_VERSION_ 1.0)
+
+	find_package(recls ${recls_REQUIRED_VERSION_} REQUIRED)
+
+	message("-- CMake package recls found (version ${recls_VERSION}; ${recls_REQUIRED_VERSION_} requested)")
+
+	add_compile_definitions(SYLVREDXX_HAS_recls)
+endif(BUILD_TESTING)
+
+
+# ############################
+# shwild (optional)
+
+if(NOT (NO_SHWILD))
+
+	find_package(shwild QUIET)
+
+	if(shwild_FOUND)
+
+		message("-- CMake package shwild found (version ${shwild_VERSION})")
+	endif(shwild_FOUND)
+endif()
+
+if(shwild_FOUND)
+
+	add_compile_definitions(SYLVREDXX_HAS_shwild)
+	add_compile_definitions(XTESTS_HAS_SHWILD)
+endif()
 
 
 # ############################
@@ -155,6 +266,40 @@ else()
 endif()
 
 
+# ############################
+# UNIXem
+
+if((USE_UNIXEM) AND (WIN32))
+
+	set(UNIXem_REQUIRED_VERSION_ 1.12.7)
+
+	find_package(UNIXem ${UNIXem_REQUIRED_VERSION_} REQUIRED)
+
+	message("-- CMake package UNIXem found (version ${UNIXem_VERSION}; ${UNIXem_REQUIRED_VERSION_} requested)")
+
+	add_compile_definitions(_STLSOFT_FORCE_ANY_COMPILER)
+	add_compile_definitions(EMULATE_UNIX_ON_WINDOWS)
+	add_compile_definitions(RECLS_HAS_UNIXEM)
+	add_compile_definitions(STLSOFT_HAS_UNIXEM)
+	add_compile_definitions(SYLVREDXX_HAS_UNIXem)
+endif()
+
+
+# ############################
+# xTests
+
+if(BUILD_TESTING)
+
+	set(xTests_REQUIRED_VERSION_ 0.26.3)
+
+	find_package(xTests ${xTests_REQUIRED_VERSION_} REQUIRED)
+
+	message("-- CMake package xTests found (version ${xTests_VERSION}; ${xTests_REQUIRED_VERSION_} requested)")
+
+	add_compile_definitions(SYLVREDXX_HAS_xTests)
+endif(BUILD_TESTING)
+
+
 # ################################################
 # includes - 2
 
@@ -168,6 +313,36 @@ include(GNUInstallDirs)
 
 # ##########################################################
 # targets
+
+# ################################################
+# custom definitions
+
+if(UNIX)
+
+	set(_BUILD_AS_UNIX 1)
+
+	message("-- Operating system Unix")
+else(UNIX)
+
+	if(WIN32)
+
+		if(USE_UNIXEM)
+
+			set(_BUILD_AS_UNIX 1)
+
+			message("-- Operating system Unix (synthesised on Windows)")
+		else(USE_UNIXEM)
+
+			set(_BUILD_AS_WIN32 1)
+
+			message("-- Operating system Windows")
+		endif(USE_UNIXEM)
+	else(WIN32)
+
+		message("-- Operating system unknown")
+	endif(WIN32)
+endif(UNIX)
+
 
 # ################################################
 # main libraries

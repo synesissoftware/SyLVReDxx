@@ -5,18 +5,18 @@
 # Purpose:  CMake lists file for SyLVReDxx core library
 #
 # Created:  ...
-# Updated:  24th April 2025
+# Updated:  7th May 2025
 #
 # ######################################################################## #
 
 
-if(UNIX)
+if(_BUILD_AS_UNIX)
 
 	add_definitions(-DUNIX)
 	add_definitions(-Dunix)
-endif(UNIX)
+endif(_BUILD_AS_UNIX)
 
-if(WIN32)
+if(_BUILD_AS_WIN32)
 
 	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 
@@ -29,12 +29,20 @@ if(WIN32)
 
 		add_definitions(-DWIN32)
 	endif()
-endif(WIN32)
+endif(_BUILD_AS_WIN32)
 
-if ((MSVC) AND (MSVC_VERSION GREATER_EQUAL 1914))
+if (MSVC)
 
-	add_compile_options("/Zc:__cplusplus")
-endif()
+	if(MSVC_VERSION LESS 1920)
+
+		add_compile_options("/wd4822")
+	endif()
+
+	if(MSVC_VERSION GREATER_EQUAL 1914)
+
+		add_compile_options("/Zc:__cplusplus")
+	endif()
+endif(MSVC)
 
 
 set(CORE_SRCS
@@ -68,6 +76,9 @@ target_include_directories(core
 
 target_link_libraries(core
 	PUBLIC
+		$<$<BOOL:b64_FOUND>:b64::core>
+		Pantheios::Pantheios.core
+		Pantheios::Pantheios.util
 		$<$<STREQUAL:${STLSOFT_INCLUDE_DIR},>:STLSoft::STLSoft>
 )
 

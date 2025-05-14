@@ -44,7 +44,18 @@ function(define_automated_test_program program_name entry_point_source_name)
 	target_link_libraries(${program_name}
 		PRIVATE
 			core
-			# $<${shwild_FOUND}:shwild::core>
+			# $<$<BOOL:${b64_FOUND}>:b64::core> # this brought in by Pantheios
+			CLASP::core
+			libCLImate::core
+			Pantheios::Pantheios.core
+			Pantheios::Pantheios.fe.all
+			Pantheios::Pantheios.be.AnsiConsole
+			Pantheios::Pantheios.bec.AnsiConsole
+			Pantheios::Pantheios.util
+			recls::core
+			$<$<BOOL:${shwild_FOUND}>:shwild::core>
+			$<$<STREQUAL:${STLSOFT_INCLUDE_DIR},>:STLSoft::STLSoft>
+			xTests::core
 	)
 
 	define_target_compile_options(${program_name})
@@ -60,7 +71,17 @@ function(define_example_program program_name entry_point_source_name)
 	target_link_libraries(${program_name}
 		PRIVATE
 			core
-			# $<${shwild_FOUND}:shwild::core>
+			# $<$<BOOL:${b64_FOUND}>:b64::core> # this brought in by Pantheios
+			CLASP::core
+			libCLImate::core
+			Pantheios::Pantheios.core
+			Pantheios::Pantheios.fe.all
+			Pantheios::Pantheios.be.AnsiConsole
+			Pantheios::Pantheios.bec.AnsiConsole
+			Pantheios::Pantheios.util
+			recls::core
+			$<$<BOOL:${shwild_FOUND}>:shwild::core>
+			$<$<STREQUAL:${STLSOFT_INCLUDE_DIR},>:STLSoft::STLSoft>
 	)
 
 	define_target_compile_options(${program_name})
